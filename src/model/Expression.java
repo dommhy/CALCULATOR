@@ -19,14 +19,19 @@ public class Expression {
 
     /**
      * Adds a segment to the expression if it is a digit or an operator
+     * Adds a zero if the expression starts with an operator.
      * @param seg the segment to add
      */
     public boolean add(String seg) {
-        if (seg.chars().allMatch(Character::isDigit) || isOperator(seg)) {
-            exp.append(seg);
-            return true;
+        if (!seg.chars().allMatch(Character::isDigit) && !isOperator(seg)) {
+            return false;
         }
-        return false;
+        exp.append(seg);
+        if (exp.toString().startsWith("+") || exp.toString().startsWith("-")) {
+            exp.insert(0, "0");
+        
+        }
+        return true;
     }
 
     /**
