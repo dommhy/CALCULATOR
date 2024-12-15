@@ -19,7 +19,7 @@ public class Expression {
 
     /**
      * Adds a segment to the expression if it is a digit or an operator
-     * Adds a zero if the expression starts with an operator.
+     * Adds a zero if the expression starts with {@code '+'} or {@code '-'}.
      * @param seg the segment to add
      */
     public boolean add(String seg) {
@@ -35,7 +35,7 @@ public class Expression {
     }
 
     /**
-     * Removes the last character from the expression
+     * Clears the expression. Sets the expression to an empty string.
      */
     public void clear() {
         exp.setLength(0);
@@ -43,7 +43,7 @@ public class Expression {
 
     /**
      * Returns the expression as a string
-     * @return the expression
+     * @return the expression as a string
      */
     public String toString() {
         return exp.toString();

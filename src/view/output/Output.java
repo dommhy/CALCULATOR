@@ -1,6 +1,6 @@
 package view.output;
 
-import ctrl.Driver;
+import ctrl.ButtonDriver;
 import model.Expression;
 import processing.core.PApplet;
 
@@ -20,8 +20,8 @@ public class Output {
      */
     public Output(PApplet p) {
         this.p = p;
-        expression = Driver.getDriver(p).getExpression();
-        result = Driver.getDriver(p).click();
+        expression = ButtonDriver.getDriver(p).getExpression();
+        result = ButtonDriver.getDriver(p).click();
         textXpos = p.width - p.width/40;
     }
 
@@ -46,17 +46,17 @@ public class Output {
 
     /**
      * Updates the expression and result from the Driver class
-     * @see ctrl.Driver
+     * @see ctrl.ButtonDriver
      */
     public void update() {
-        result = Driver.getDriver(p).click();
-        expression = Driver.getDriver(p).getExpression();
+        result = ButtonDriver.getDriver(p).click();
+        expression = ButtonDriver.getDriver(p).getExpression();
     }
 
     /**
      * Handles exceptions thrown by the Driver class
      * @param e the exception that was thrown
-     * @see ctrl.Driver
+     * @see ctrl.ButtonDriver
      */
     public void errorText(Exception e) {
         p.fill(255);

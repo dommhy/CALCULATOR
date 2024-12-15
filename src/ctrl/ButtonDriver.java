@@ -7,20 +7,20 @@ import processing.core.*;
 /**
  * Class that handles the event when buttons are clicked
  */
-public class Driver {
+public class ButtonDriver {
 
-    private static Driver instance;
+    private static ButtonDriver instance;
     private Button[][] buttons;
     private Expression expression;
 
-    private Driver(PApplet p) {
+    private ButtonDriver(PApplet p) {
         buttons = ButtonGrid.getButtonGrid(p).getButtons();
         expression = new Expression();
     }
 
-    public static synchronized Driver getDriver(PApplet p) {
+    public static synchronized ButtonDriver getDriver(PApplet p) {
         if (instance == null) {
-            instance = new Driver(p);
+            instance = new ButtonDriver(p);
         }
         return instance;
     }
@@ -50,7 +50,16 @@ public class Driver {
         return result;
     }
 
-    public Exception resetException(Exception e) {
+    /**
+     * Resets the exception when the cancel button is clicked
+     * @param e the exception to reset
+     * @param p the PApplet object, for code to work
+     * @return {@code null}
+     */
+    public Exception resetException(Exception e, PApplet p) {
+        if (ButtonGrid.getButtonGrid(p).getCancelButton().isClicked()) { //reset exception
+            e = null;
+        }
         return null;
     }
 
@@ -59,7 +68,7 @@ public class Driver {
      * @param d
      * @return
      */
-    private String formatResult(double d) {
+    static String formatResult(double d) {
         if (d % 1 == 0) {
             return (int) d + "";
         }
