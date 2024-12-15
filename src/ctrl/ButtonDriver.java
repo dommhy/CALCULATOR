@@ -29,8 +29,8 @@ public class ButtonDriver {
      * Handles the event when buttons are clicked. Returns the result of the calculation, applicable to the button '='
      * @return the result of the calculation. If the calculation is not done, return an empty string
      */
-    public String click() {
-        String result = "";
+    public Expression click() {
+        Expression result = new Expression();
         for (int i = 0; i < buttons.length; i++) {
             for (int j = 0; j < buttons[i].length; j++) {
                 if (buttons[i][j].isClicked()) {
@@ -51,31 +51,30 @@ public class ButtonDriver {
     }
 
     /**
-     * Resets the exception when the cancel button is clicked
+     * Resets the exception
      * @param e the exception to reset
      * @param p the PApplet object, for code to work
+     * @implNote Not used in the current implementation
      * @return {@code null}
      */
-    public Exception resetException(Exception e, PApplet p) {
-        if (ButtonGrid.getButtonGrid(p).getCancelButton().isClicked()) { //reset exception
-            e = null;
-        }
+    public static Exception resetException(Exception e, PApplet p) {
+        e = null;
         return null;
     }
 
     /**
-     * Formats the result to be displayed on the screen
+     * Rounds the result to 9 decimal places if the result is a decimal number
      * @param d
-     * @return
+     * @return the formatted result
      */
-    static String formatResult(double d) {
+    static Expression formatResult(double d) {
         if (d % 1 == 0) {
-            return (int) d + "";
+            return new Expression((long) d + "");
         }
         if ((d + "").length() > 9) {
             d = Math.round(d * 1000000000.0) / 1000000000.0;
         }
-        return d + "";
+        return new Expression (d + "");
     }
 
     public Expression getExpression() {

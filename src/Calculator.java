@@ -37,6 +37,8 @@ public class Calculator extends PApplet {
         } catch (Exception e) {
             this.e = e;
         }
-        resetException(e, this);
+        if (inputDisplay.getCancelButton().isClicked()) { //reset exception
+            e = null;
+        }
     }
 }
