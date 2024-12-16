@@ -54,6 +54,11 @@ public class Output {
         exp = driver.getExpression();
     }
 
+    public void updateText() {
+        driver.text(p);
+        exp = driver.getExpression();
+    }
+
     /**
      * Handles exceptions thrown by the Driver class
      * @param e the exception that was thrown

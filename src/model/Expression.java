@@ -21,6 +21,7 @@ public class Expression {
      * Adds a segment to the expression if it is a digit or an operator
      * Adds a zero if the expression starts with {@code '+'} or {@code '-'}.
      * @param seg the segment to add
+     * @return {@code true} if the operation is successful
      */
     public boolean add(String seg) {
         if (!seg.chars().allMatch(Character::isDigit) && !isOperator(seg)) {
@@ -32,6 +33,19 @@ public class Expression {
         
         }
         return true;
+    }
+
+    /**
+     * Deletes the last character of the expression
+     * @return {@code true} if the expression is not empty
+     */
+    public boolean pop() {
+        try {
+            exp.deleteCharAt(exp.length()-1);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     /**
@@ -125,6 +139,7 @@ public class Expression {
      * @see #add(char)
      */
     public static boolean isOperator(String segment) {
-        return segment.equals("+") || segment.equals("-") || segment.equals("*") || segment.equals("/");
+        return segment.equals("+") || segment.equals("-") ||
+               segment.equals("*") || segment.equals("/");
     }
 }

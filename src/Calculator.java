@@ -8,8 +8,8 @@ public class Calculator extends PApplet {
         PApplet.main("Calculator");
     }
     
-    ButtonGrid inputDisplay;
-    Output outputDisplay;
+    ButtonGrid input;
+    Output output;
     Exception e = null; //variable to handle arithmetic and syntax errors
 
     public void settings() {
@@ -17,28 +17,33 @@ public class Calculator extends PApplet {
     }
 
     public void setup() {
-        inputDisplay = ButtonGrid.getButtonGrid(this);
-        outputDisplay = new Output(this);
+        input = ButtonGrid.getButtonGrid(this);
+        output = new Output(this);
     }
 
     public void draw() {
         background(80);
-        inputDisplay.display();
+        input.display();
         if (e != null) {
-            outputDisplay.errorText(e);
+            output.errorText(e);
         } else {
-            outputDisplay.display();
+            output.display();
         }
     }
 
     public void mousePressed() {
         try {
-            outputDisplay.update();
+            output.update();
         } catch (Exception e) {
             this.e = e;
         }
-        if (inputDisplay.getCancelButton().isClicked()) { //reset exception
+        if (input.getCancelButton().isClicked()) { //reset exception
             e = null;
         }
+    }
+
+    public void keyPressed() {
+        output.updateText();
+        System.out.println(key);
     }
 }

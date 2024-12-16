@@ -28,6 +28,7 @@ public class Driver {
 
     /**
      * Handles the event when buttons are clicked. Returns the result of the calculation, applicable to the button '='
+     * @implNote The method is called when the mouse is pressed
      * @return the result of the calculation. If the calculation is not done, return an empty string
      */
     public Expression click() {
@@ -50,6 +51,30 @@ public class Driver {
                     }
                 }
             }
+        }
+        return result;
+    }
+
+    /**
+     * Handles the event when buttons are clicked. Returns the result of the calculation, applicable to the button '='
+     * @param p the PApplet object, to access key and keyCode variables for code to work
+     * @implNote The method is called when the mouse is pressed
+     * @return the result of the calculation. If the calculation is not done, return an empty string
+     */
+    public Expression text(PApplet p) {
+        int c = p.keyCode;
+        if (c == 'C' || c == 'c') {
+            expression.clear();
+            result.clear();
+        } else if (c == PApplet.ENTER || c == PApplet.RETURN) {
+            expression.add("=");
+            Calculation calc = new Calculation(expression);
+            result = formatResult(calc.evaluate());
+        } else if (Character.isDigit((char)c) || Expression.isOperator(c + "")) {
+            if (!result.toString().isEmpty()) {
+                updateExpression();
+            }  
+            expression.add((char)c + "");
         }
         return result;
     }
