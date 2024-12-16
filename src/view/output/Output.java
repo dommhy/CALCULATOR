@@ -1,6 +1,6 @@
 package view.output;
 
-import ctrl.ButtonDriver;
+import ctrl.Driver;
 import model.Expression;
 import processing.core.PApplet;
 
@@ -10,8 +10,8 @@ import processing.core.PApplet;
 public class Output {
 
     private PApplet p;
-    private Expression expression;
-    private Expression result;
+    private Driver driver;
+    private Expression exp;
     private float textXpos;
     
     /**
@@ -20,8 +20,8 @@ public class Output {
      */
     public Output(PApplet p) {
         this.p = p;
-        expression = ButtonDriver.getDriver(p).getExpression();
-        result = ButtonDriver.getDriver(p).click();
+        driver = Driver.getDriver(p);
+        exp = driver.getExpression();
         textXpos = p.width - p.width/40;
     }
 
@@ -29,15 +29,16 @@ public class Output {
      * Displays the expression and result on the screen
      */
     public void display() {
+        Expression result = driver.getResult();
         p.fill(255);
         p.noStroke();
         p.textAlign(PApplet.RIGHT);
         if (result.toString().isEmpty()) {
             p.textSize(p.height/10);
-            p.text(expression.toString(), textXpos, p.height/4);
+            p.text(exp.toString(), textXpos, p.height/4);
         } else {
             p.textSize(p.height/20);
-            p.text(expression.toString(), textXpos, p.height/8);
+            p.text(exp.toString(), textXpos, p.height/8);
             p.textSize(p.height/10);
             p.text(result.toString(), textXpos, p.height/4);
         }
@@ -46,17 +47,17 @@ public class Output {
 
     /**
      * Updates the expression and result from the Driver class
-     * @see ctrl.ButtonDriver
+     * @see ctrl.Driver
      */
     public void update() {
-        result = ButtonDriver.getDriver(p).click();
-        expression = ButtonDriver.getDriver(p).getExpression();
+        driver.click();
+        exp = driver.getExpression();
     }
 
     /**
      * Handles exceptions thrown by the Driver class
      * @param e the exception that was thrown
-     * @see ctrl.ButtonDriver
+     * @see ctrl.Driver
      */
     public void errorText(Exception e) {
         p.fill(255);

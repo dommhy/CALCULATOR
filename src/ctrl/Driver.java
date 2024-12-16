@@ -7,20 +7,21 @@ import processing.core.*;
 /**
  * Class that handles the event when buttons are clicked
  */
-public class ButtonDriver {
+public class Driver {
 
-    private static ButtonDriver instance;
+    private static Driver instance;
     private Button[][] buttons;
-    private Expression expression;
+    private Expression expression, result;
 
-    private ButtonDriver(PApplet p) {
+    private Driver(PApplet p) {
         buttons = ButtonGrid.getButtonGrid(p).getButtons();
         expression = new Expression();
+        result = new Expression();
     }
 
-    public static synchronized ButtonDriver getDriver(PApplet p) {
+    public static synchronized Driver getDriver(PApplet p) {
         if (instance == null) {
-            instance = new ButtonDriver(p);
+            instance = new Driver(p);
         }
         return instance;
     }
@@ -30,18 +31,21 @@ public class ButtonDriver {
      * @return the result of the calculation. If the calculation is not done, return an empty string
      */
     public Expression click() {
-        Expression result = new Expression();
         for (int i = 0; i < buttons.length; i++) {
             for (int j = 0; j < buttons[i].length; j++) {
                 if (buttons[i][j].isClicked()) {
                     char c = buttons[i][j].getLabel();
                     if (c == 'C') {
                         expression.clear();
+                        result.clear();
                     } else if (c == '=') {
                         expression.add("=");
                         Calculation calc = new Calculation(expression);
                         result = formatResult(calc.evaluate());
                     } else {
+                        if (!result.toString().isEmpty()) {
+                            updateExpression();
+                        }  
                         expression.add(c + "");
                     }
                 }
@@ -67,7 +71,7 @@ public class ButtonDriver {
      * @param d
      * @return the formatted result
      */
-    static Expression formatResult(double d) {
+    private static Expression formatResult(double d) {
         if (d % 1 == 0) {
             return new Expression((long) d + "");
         }
@@ -77,7 +81,30 @@ public class ButtonDriver {
         return new Expression (d + "");
     }
 
+    /**
+     * Returns the current expression
+     * @return the expression
+     */
     public Expression getExpression() {
         return expression;
+    }
+
+    /**
+     * Returns the result of the calculation
+     * @return the result
+     */
+    public Expression getResult() {
+        return result;
+    }
+
+    /**
+     * Sets the expression to the result of the calculation and resets the result
+     * @param expression the expression to set
+     * @implNote Used when button is clicked and result is not empty
+     * @see #click()
+     */
+    private void updateExpression() {
+        expression = result;
+        result = new Expression();
     }
 }
