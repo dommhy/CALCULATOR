@@ -75,10 +75,18 @@ public class ButtonGrid {
         return buttons;
     }
 
+    /**
+     * Gets the top left y-coordinate of the grid.
+     * @return the y-coordinate of the grid
+     */
     public float getY() {
         return p.height - 4*dist;
     }
 
+    /**
+     * Gets the clear button.
+     * @return the clear button
+     */
     public Button getCancelButton() {
         return buttons[3][0];
     }

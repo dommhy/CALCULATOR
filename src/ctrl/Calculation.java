@@ -11,9 +11,10 @@ public class Calculation {
     }
 
     /**
-     * Converts the infix expression to postfix in a form of a list
+     * Converts the infix expression to postfix in a form of a list. Cited from GeeksforGeeks.
      * @return the postfix expression
      * @throws IllegalArgumentException if the expression is invalid
+     * @see https://www.geeksforgeeks.org/convert-infix-expression-to-postfix-expression/
      */
     public List<String> postfix() throws IllegalArgumentException {
         List<String> infix = exp.getSegments();
@@ -40,10 +41,11 @@ public class Calculation {
     }
 
     /**
-     * Returns the precedence of the operator
+     * Returns the precedence of the operator. Cited from GeeksforGeeks.
      * @param operator the operator
      * @return the precedence of the operator
      * @see #postfix()
+     * @see https://www.geeksforgeeks.org/convert-infix-expression-to-postfix-expression/
      */
     private int precedence(String operator) {
         if (operator.equals("+") || operator.equals("-")) {
@@ -56,10 +58,11 @@ public class Calculation {
     }
 
     /**
-     * Evaluates the postfix expression
+     * Evaluates the postfix expression. Cited from GeeksforGeeks.
      * @param postfix the postfix expression
      * @return the result of the expression
      * @throws ArithmeticException if there is division by zero
+     * @see https://www.geeksforgeeks.org/evaluation-of-postfix-expression/
      */
     private double evaluate(List<String> postfix) throws ArithmeticException {
         Stack<Double> operandStack = new Stack<>();
@@ -96,7 +99,7 @@ public class Calculation {
      * @return the result of the operation
      * @throws ArithmeticException if there is division by zero
      */
-    private double operate(double operand1, double operand2, String operator) {
+    private double operate (double operand1, double operand2, String operator) throws ArithmeticException {
         if (operator.equals("+")) {
             return operand1 + operand2;
         } else if (operator.equals("-")) {

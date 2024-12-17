@@ -47,13 +47,18 @@ public class Output {
 
     /**
      * Updates the expression and result from the Driver class
-     * @see ctrl.Driver
+     * @see ctrl.Driver called in mousePressed()
      */
     public void update() {
         driver.click();
         exp = driver.getExpression();
     }
 
+    /**
+     * Updates the expression and result from the Driver class.
+     * @see ctrl.Driver
+     * @implNote Called in keyPressed() in the PApplet class
+     */
     public void updateText() {
         driver.text(p);
         exp = driver.getExpression();

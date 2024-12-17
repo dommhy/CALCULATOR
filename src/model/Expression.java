@@ -9,12 +9,19 @@ import java.util.function.*;
 public class Expression {
     private StringBuilder exp;
     
+    /**
+     * Constructs an expression with an empty string
+     */
     public Expression() {
         exp = new StringBuilder();
     }
 
-    public Expression(String expression) {
-        this.exp = new StringBuilder(expression);
+    /**
+     * Constructs an expression with the given string
+     * @param exp
+     */
+    public Expression(String exp) {
+        this.exp = new StringBuilder(exp);
     }
 
     /**
@@ -57,7 +64,7 @@ public class Expression {
 
     /**
      * Returns the expression as a string
-     * @return the expression as a string
+     * @return string representation of the expression
      */
     public String toString() {
         return exp.toString();
@@ -98,9 +105,10 @@ public class Expression {
 
     /**
      * Splits the expression into segments that can be used to convert to postfix
-     * @return the segments of the expression
+     * @return the segments of the expression as a list
      * @throws IllegalArgumentException if the expression is invalid
      * @see #isValid()
+     * @implNote Method is used in the {@code Driver} class before converting the expression to postfix
      */
     public List<String> getSegments() {
         if (!isValid()) {
@@ -128,6 +136,7 @@ public class Expression {
                 result.add(exp.substring(start));
             }
         }
+
         return result;
     }
 

@@ -1,5 +1,7 @@
 package ctrl;
 
+import org.junit.platform.suite.api.DisableParentConfigurationParameters;
+
 import model.Expression;
 import view.input.*;
 import processing.core.*;
@@ -19,6 +21,11 @@ public class Driver {
         result = new Expression();
     }
 
+    /**
+     * Returns the instance of the Driver class. If the instance is null, creates a new instance
+     * @param p - the PApplet object, to access the buttons
+     * @return the instance of the Driver class {@link #Driver(PApplet)}
+     */
     public static synchronized Driver getDriver(PApplet p) {
         if (instance == null) {
             instance = new Driver(p);
@@ -28,8 +35,8 @@ public class Driver {
 
     /**
      * Handles the event when buttons are clicked. Returns the result of the calculation, applicable to the button '='
-     * @implNote The method is called when the mouse is pressed
      * @return the result of the calculation. If the calculation is not done, return an empty string
+     * @implNote The method is called when the mouse is pressed
      */
     public Expression click() {
         for (int i = 0; i < buttons.length; i++) {
@@ -58,9 +65,9 @@ public class Driver {
 
     /**
      * Handles the event when keys are pressed. Returns the result of the calculation.
-     * @param p the PApplet object, to access key and keyCode variables for code to work
-     * @implNote The method is called when the key is pressed {@link processing.core.PApplet#keyPressed()}
+     * @param p - the PApplet object, to access key and keyCode variables for code to work 
      * @return the result of the calculation. If the calculation is not done, return an empty string
+     * @implNote The method is called when the key is pressed {@link processing.core.PApplet#keyPressed()}
      */
     public Expression text(PApplet p) {
         char c = p.key;
@@ -84,21 +91,9 @@ public class Driver {
     }
 
     /**
-     * Resets the exception
-     * @param e the exception to reset
-     * @param p the PApplet object, for code to work
-     * @implNote Not used in the current implementation
-     * @return {@code null}
-     */
-    public static Exception resetException(Exception e, PApplet p) {
-        e = null;
-        return null;
-    }
-
-    /**
      * Rounds the result to 9 decimal places if the result is a decimal number
-     * @param d
-     * @return the formatted result
+     * @param d - the double value to be formatted
+     * @return the formatted result as an Expression object
      */
     private static Expression formatResult(double d) {
         if (d % 1 == 0) {
@@ -111,16 +106,20 @@ public class Driver {
     }
 
     /**
-     * Returns the current expression
+     * Gets the current expression
      * @return the expression
+     * @implNote Used in the Output class to display the expression
+     * @see view.output.Output#display()
      */
     public Expression getExpression() {
         return expression;
     }
 
     /**
-     * Returns the result of the calculation
+     * Gets the result of the calculation
      * @return the result
+     * @implNote Used in the Output class to display the result
+     * @see view.output.Output#display()
      */
     public Expression getResult() {
         return result;
@@ -131,6 +130,7 @@ public class Driver {
      * @param expression the expression to set
      * @implNote Used when button is clicked and result is not empty
      * @see #click()
+     * @see #text(PApplet)
      */
     private void updateExpression() {
         expression = result;
