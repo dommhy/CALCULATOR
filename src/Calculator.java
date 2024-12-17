@@ -44,6 +44,5 @@ public class Calculator extends PApplet {
 
     public void keyPressed() {
         output.updateText();
-        System.out.println(key);
     }
 }

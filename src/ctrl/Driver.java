@@ -44,9 +44,10 @@ public class Driver {
                         Calculation calc = new Calculation(expression);
                         result = formatResult(calc.evaluate());
                     } else {
-                        if (!result.toString().isEmpty()) {
+                        if (Expression.isOperator(c + "") && !result.toString().isEmpty()) {
                             updateExpression();
-                        }  
+                        }
+                        result.clear();
                         expression.add(c + "");
                     }
                 }
@@ -56,25 +57,28 @@ public class Driver {
     }
 
     /**
-     * Handles the event when buttons are clicked. Returns the result of the calculation, applicable to the button '='
+     * Handles the event when keys are pressed. Returns the result of the calculation.
      * @param p the PApplet object, to access key and keyCode variables for code to work
-     * @implNote The method is called when the mouse is pressed
+     * @implNote The method is called when the key is pressed {@link processing.core.PApplet#keyPressed()}
      * @return the result of the calculation. If the calculation is not done, return an empty string
      */
     public Expression text(PApplet p) {
-        int c = p.keyCode;
+        char c = p.key;
         if (c == 'C' || c == 'c') {
             expression.clear();
             result.clear();
-        } else if (c == PApplet.ENTER || c == PApplet.RETURN) {
+        } else if (c == '=' || c == PApplet.ENTER || c == PApplet.RETURN) {
             expression.add("=");
             Calculation calc = new Calculation(expression);
             result = formatResult(calc.evaluate());
-        } else if (Character.isDigit((char)c) || Expression.isOperator(c + "")) {
-            if (!result.toString().isEmpty()) {
-                updateExpression();
-            }  
-            expression.add((char)c + "");
+        } else if (c == PApplet.BACKSPACE) {
+            expression.pop();
+        } else if (Expression.isOperator(c + "") && !result.toString().isEmpty()) {
+            updateExpression();
+            expression.add(c + "");
+        } else if (Character.isDigit(c) || Expression.isOperator(c + "")) {
+            result.clear();
+            expression.add(c + "");
         }
         return result;
     }
