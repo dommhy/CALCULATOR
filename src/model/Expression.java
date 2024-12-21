@@ -36,7 +36,7 @@ public class Expression {
         }
         exp.append(seg);
         if (exp.toString().startsWith("+") || exp.toString().startsWith("-")) {
-            exp.insert(0, "0");
+            exp.insert(0, "0"); //add zero to handle negative numbers being the first number
         
         }
         return true;
@@ -44,7 +44,7 @@ public class Expression {
 
     /**
      * Deletes the last character of the expression
-     * @return {@code true} if the expression is not empty
+     * @return {@code true} if the operation is successful
      */
     public boolean pop() {
         try {
@@ -81,21 +81,30 @@ public class Expression {
             return false;
         }
 
+        Predicate<String> validNonDigit = s -> (isOperator(s) || s.equals("."));
+
         for (int i = 0; i < exp.length(); i++) {
             String str = exp.charAt(i) + "";
-            if (!Character.isDigit(exp.charAt(i)) && !isOperator(str)) {
+            if (!Character.isDigit(exp.charAt(i)) && !validNonDigit.test(str)) {
                 return false;
             }
-            if (i == exp.length() - 1 && isOperator(str)) {
+            if (i == exp.length() - 1 && validNonDigit.test(str)) {
                 return false;
             }
-            if (i == 0 && (str.equals("*") || str.equals("/"))) {
+            if (i == 0 && (str.equals("*") || str.equals("/"))) { //check for operator at beginning
                 return false;
             }
-            if (i > 0) {
+            if (i > 0) { //check for two operators next to each other
                 String prev = exp.charAt(i - 1) + "";
-                if (isOperator(str) && isOperator(prev)) {
+                if (validNonDigit.test(str) && validNonDigit.test(prev)) {
                     return false;
+                }
+            }
+            if (str.equals(".")) { //check for multiple decimal points
+                for (int j = i + 1; j < exp.length() && !isOperator(exp.charAt(j) + ""); j++) {
+                    if (exp.charAt(j) == '.') {
+                        return false;
+                    }
                 }
             }
         }
@@ -127,7 +136,7 @@ public class Expression {
 
         int start = 0;
         for (int i = 0; i < exp.length(); i++) {
-            if (isOperator(exp.charAt(i) + "")) {
+            if (isOperator(exp.charAt(i))) {
                 addItem.accept(result, exp.substring(start, i)); //adds numbers
                 addItem.accept(result, exp.substring(i, i+1)); //adds operators
                 start = i+1;
@@ -141,8 +150,8 @@ public class Expression {
     }
 
     /**
-     * Checks if the character is an operator, helper method
-     * @param segment
+     * Checks if the character is an operator
+     * @param segment - the string to check
      * @return {@code true} if the character is an operator
      * @see #isValid()
      * @see #add(char)
@@ -150,5 +159,15 @@ public class Expression {
     public static boolean isOperator(String segment) {
         return segment.equals("+") || segment.equals("-") ||
                segment.equals("*") || segment.equals("/");
+    }
+
+    /**
+     * Checks if the character is an operator, helper method
+     * @param c - the character to check
+     * @return {@code true} if the character is an operator 
+     * @see #isOperator(String)
+     */
+    private static boolean isOperator(char c) {
+        return isOperator(c + "");
     }
 }

@@ -21,7 +21,13 @@ public class ExpressionTest {
             new Expression("-34+3"),
             new Expression(),
             new Expression("+"),
-            new Expression("*")
+            new Expression("*"),
+            new Expression("3.4"),
+            new Expression("3..2"),
+            new Expression("."),
+            new Expression("4.3.2"),
+            new Expression("3.4+2"),
+            new Expression("33.4+24.3")
         };
     }
 
@@ -64,18 +70,22 @@ public class ExpressionTest {
 
     @Test
     void testIsValid() {
-        for (int i = 0; i < e.length; i++) {
-            switch(i) {
-                case 0:
-                case 2:
-                case 3:
-                case 6:
-                    assertTrue(e[i].isValid());
-                    break;
-                default:
-                    assertFalse(e[i].isValid());
-            }
-        }
+        assertTrue(e[0].isValid());
+        assertFalse(e[1].isValid());
+        assertTrue(e[2].isValid());
+        assertTrue(e[3].isValid());
+        assertFalse(e[4].isValid());
+        assertFalse(e[5].isValid());
+        assertTrue(e[6].isValid());
+        assertFalse(e[7].isValid());
+        assertFalse(e[8].isValid());
+        assertFalse(e[9].isValid());
+        assertTrue(e[10].isValid());
+        assertFalse(e[11].isValid());
+        assertFalse(e[12].isValid());
+        assertFalse(e[13].isValid());
+        assertTrue(e[14].isValid());
+        assertTrue(e[15].isValid());
     }
 
     @Test
@@ -90,5 +100,11 @@ public class ExpressionTest {
         assertThrows(IllegalArgumentException.class, () -> e[7].getSegments());
         assertThrows(IllegalArgumentException.class, () -> e[8].getSegments());
         assertThrows(IllegalArgumentException.class, () -> e[9].getSegments());
+        assertArrayEquals(new String[] {"3.4"}, e[10].getSegments().toArray(String[]::new));
+        assertThrows(IllegalArgumentException.class, () -> e[11].getSegments());
+        assertThrows(IllegalArgumentException.class, () -> e[12].getSegments());
+        assertThrows(IllegalArgumentException.class, () -> e[13].getSegments());
+        assertArrayEquals(new String[] {"3.4", "+", "2"}, e[14].getSegments().toArray(String[]::new));
+        assertArrayEquals(new String[] {"33.4", "+", "24.3"}, e[15].getSegments().toArray(String[]::new));
     }
 }
