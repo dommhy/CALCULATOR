@@ -19,7 +19,9 @@ public class CalculationTest {
             new Expression("35"),
             new Expression("3+5*2-"),
             new Expression("3/0"),
-            new Expression("100+100")
+            new Expression("100+100"),
+            new Expression("0.7*4"),
+            new Expression("0.77*0.7")
         };
         calc = new Calculation[exp.length];
         for (int i = 0; i < exp.length; i++) {
@@ -36,6 +38,8 @@ public class CalculationTest {
         assertThrows(IllegalArgumentException.class, () -> calc[4].evaluate());
         assertThrows(ArithmeticException.class, () -> calc[5].evaluate());
         assertEquals(200, calc[6].evaluate());
+        assertEquals(2.8, calc[7].evaluate());
+        assertEquals(0.539, calc[8].evaluate(), 0.001);
     }
 
     @Test
@@ -47,6 +51,8 @@ public class CalculationTest {
         assertThrows(IllegalArgumentException.class, () -> calc[4].postfix());
         assertArrayEquals(calc[5].postfix().toArray(String[]::new), new String[] { "3", "0", "/" });
         assertArrayEquals(calc[6].postfix().toArray(String[]::new), new String[] { "100", "100", "+" });
+        assertArrayEquals(calc[7].postfix().toArray(String[]::new), new String[] { "0.7", "4", "*" });
+        assertArrayEquals(calc[8].postfix().toArray(String[]::new), new String[] { "0.77", "0.7", "*" });
     }
 
 }

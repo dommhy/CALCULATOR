@@ -1,6 +1,8 @@
 package ctrl;
 
 import java.util.*;
+import java.util.function.Predicate;
+
 import model.Expression;
 
 public class Calculation {
@@ -23,7 +25,7 @@ public class Calculation {
 
         for (int i = 0; i < infix.size(); i++) {
             String seg = infix.get(i);
-            if (seg.chars().allMatch(Character::isDigit)) {
+            if (Expression.numeric(seg)) {
                 result.add(seg);
             } else { //no brackets for this calculator
                 while (!operatorStack.isEmpty() && precedence(seg) <= precedence(operatorStack.peek())) {
@@ -68,7 +70,7 @@ public class Calculation {
         Stack<Double> operandStack = new Stack<>();
         for (int i = 0; i < postfix.size(); i++) {
             String str = postfix.get(i);
-            if (str.chars().allMatch(Character::isDigit)) {
+            if (Expression.numeric(str)) {
                 operandStack.push(Double.parseDouble(str));
             } else {
                 double operand2 = operandStack.pop();

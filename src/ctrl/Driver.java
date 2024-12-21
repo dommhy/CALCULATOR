@@ -45,15 +45,14 @@ public class Driver {
                         expression.clear();
                         result.clear();
                     } else if (c == '=') {
-                        expression.add("=");
                         Calculation calc = new Calculation(expression);
                         result = formatResult(calc.evaluate());
                     } else {
-                        if (Expression.isOperator(c + "") && !result.toString().isEmpty()) {
+                        if (Expression.isOperator(c) && !result.toString().isEmpty()) {
                             updateExpression();
                         }
                         result.clear();
-                        expression.add(c + "");
+                        expression.add(c);
                     }
                 }
             }
@@ -78,12 +77,12 @@ public class Driver {
             result = formatResult(calc.evaluate());
         } else if (c == PApplet.BACKSPACE) {
             expression.pop();
-        } else if (Expression.isOperator(c + "") && !result.toString().isEmpty()) {
+        } else if (Expression.isOperator(c) && !result.toString().isEmpty()) {
             updateExpression();
-            expression.add(c + "");
-        } else if (Character.isDigit(c) || Expression.isOperator(c + "")) {
+            expression.add(c);
+        } else if (Character.isDigit(c) || Expression.isOperator(c)) {
             result.clear();
-            expression.add(c + "");
+            expression.add(c);
         }
         return result;
     }

@@ -43,6 +43,16 @@ public class Expression {
     }
 
     /**
+     * Adds a character to the expression if it is a digit or an operator
+     * Adds a zero if the expression starts with {@code '+'} or {@code '-'}
+     * @param c the character to add
+     * @return {@code true} if the operation is successful
+     */
+    public boolean add(char c) {
+        return add(c + "");
+    }
+
+    /**
      * Deletes the last character of the expression
      * @return {@code true} if the operation is successful
      */
@@ -149,6 +159,8 @@ public class Expression {
         return result;
     }
 
+    //static methods that helps test expressions
+
     /**
      * Checks if the character is an operator
      * @param segment - the string to check
@@ -167,7 +179,22 @@ public class Expression {
      * @return {@code true} if the character is an operator 
      * @see #isOperator(String)
      */
-    private static boolean isOperator(char c) {
+    public static boolean isOperator(char c) {
         return isOperator(c + "");
     }
+
+    /**
+     * Checks if the string is a number
+     * @param s - the string to check
+     * @return {@code true} if the string is a number
+     */
+    public static boolean numeric(String s) {
+        try {
+            Double.parseDouble(s);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+    
 }
