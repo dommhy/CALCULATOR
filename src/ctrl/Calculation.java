@@ -1,7 +1,6 @@
 package ctrl;
 
 import java.util.*;
-import java.util.function.Predicate;
 
 import model.Expression;
 
