@@ -80,7 +80,7 @@ public class Driver {
         } else if (Expression.isOperator(c) && !result.toString().isEmpty()) {
             updateExpression();
             expression.add(c);
-        } else if (Character.isDigit(c) || Expression.isOperator(c)) {
+        } else if (Character.isDigit(c) || Expression.isOperator(c) || c == '.') {
             result.clear();
             expression.add(c);
         }

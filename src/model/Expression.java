@@ -31,13 +31,12 @@ public class Expression {
      * @return {@code true} if the operation is successful
      */
     public boolean add(String seg) {
-        if (!seg.chars().allMatch(Character::isDigit) && !isOperator(seg)) {
+        if (!validSeg(seg)) {
             return false;
         }
         exp.append(seg);
         if (exp.toString().startsWith("+") || exp.toString().startsWith("-")) {
             exp.insert(0, "0"); //add zero to handle negative numbers being the first number
-        
         }
         return true;
     }
@@ -91,11 +90,11 @@ public class Expression {
             return false;
         }
 
-        Predicate<String> validNonDigit = s -> (isOperator(s) || s.equals("."));
-
+        Predicate<String> validNonDigit = s -> (isOperator(s) || nonNumeric(s));
+        
         for (int i = 0; i < exp.length(); i++) {
             String str = exp.charAt(i) + "";
-            if (!Character.isDigit(exp.charAt(i)) && !validNonDigit.test(str)) {
+            if (!validChar(exp.charAt(i))) {
                 return false;
             }
             if (i == exp.length() - 1 && validNonDigit.test(str)) {
@@ -184,6 +183,24 @@ public class Expression {
     }
 
     /**
+     * Checks if the string is a non-numeric character, and is not an operator
+     * @param s - the string to check
+     * @return {@code true} if the string is a non-numeric character and not an operator
+     */
+    public static boolean nonNumeric(String s) {
+        return s.equals(".") || s.equals("(") || s.equals(")");
+    }
+
+    /**
+     * Checks if the character is a non-numeric character, and is not an operator
+     * @param c - the character to check
+     * @return {@code true} if the character is a non-numeric character and not an operator
+     */
+    public static boolean nonNumeric(char c) {
+        return nonNumeric(c + "");
+    }
+
+    /**
      * Checks if the string is a number
      * @param s - the string to check
      * @return {@code true} if the string is a number
@@ -195,6 +212,25 @@ public class Expression {
         } catch (NumberFormatException e) {
             return false;
         }
+    }
+
+    /**
+     * Checks if the string is a valid segment
+     * @param str - the string to check
+     * @return {@code true} if the segment contains only digits and operators
+     */
+    public static boolean validSeg(String str) {
+        String test = str.replaceAll("[0-9+*/.()\\-]", "");
+        return test.isEmpty();
+    }
+
+    /**
+     * Checks if the character is a valid character
+     * @param c - the character to check
+     * @return {@code true} if the character is a valid character
+     */
+    public static boolean validChar(char c) {
+        return validSeg(c + "");
     }
     
 }
