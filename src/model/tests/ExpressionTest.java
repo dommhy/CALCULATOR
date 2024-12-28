@@ -60,16 +60,28 @@ public class ExpressionTest {
         assertTrue("3+5*23+".equals(e[0].toString()));
         assertTrue(e[1].add(str));
         assertTrue("3**53+".equals(e[1].toString()));
-        assertTrue(e[7].add(str));
-        assertTrue("3+".equals(e[7].toString()));
 
         str = "a";
         assertFalse(e[0].add(str));
         assertTrue("3+5*23+".equals(e[0].toString()));
         assertFalse(e[1].add(str));
         assertTrue("3**53+".equals(e[1].toString()));
-        assertFalse(e[7].add(str));
-        assertTrue("3+".equals(e[7].toString()));
+
+        str = ".";
+        assertTrue(e[0].add(str));
+        assertTrue("3+5*23+0.".equals(e[0].toString()));
+
+        e[0].add("4");
+
+        str = "(";
+        assertTrue(e[0].add(str));
+        assertTrue("3+5*23+0.4*(".equals(e[0].toString()));
+
+        e[0].add("3*2");
+
+        str = ")";
+        assertTrue(e[0].add(str));
+        assertTrue("3+5*23+0.4*(3*2)".equals(e[0].toString()));
     }
 
     @Test
@@ -103,7 +115,7 @@ public class ExpressionTest {
         assertFalse(e[16].isValid());
         assertFalse(e[17].isValid());
         assertTrue(e[18].isValid());
-        assertTrue(e[19].isValid());
+        assertFalse(e[19].isValid());
         assertFalse(e[20].isValid());
         assertFalse(e[21].isValid());
         assertFalse(e[22].isValid());
@@ -122,7 +134,7 @@ public class ExpressionTest {
         assertArrayEquals(new String[] {"3.4", "+", "2"}, toArray.apply(e[14]));
         assertArrayEquals(new String[] {"33.4", "+", "24.3"}, toArray.apply(e[15]));
         assertArrayEquals(new String[] {"(", "3", "+", "2", ")", "*", "10"}, toArray.apply(e[18]));
-        assertArrayEquals(new String[] {"(", "4", "*", "3", ")", "(", "4", ")"}, toArray.apply(e[19]));
+        assertArrayEquals(new String[] {"3", "^", "7"}, toArray.apply(e[23]));
 
         assertThrows(IllegalArgumentException.class, () -> e[1].getSegments());
     }

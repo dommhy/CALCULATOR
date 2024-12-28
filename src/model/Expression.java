@@ -34,6 +34,12 @@ public class Expression {
         if (!validSeg(seg)) {
             return false;
         }
+        if (seg.equals(".") && (exp.length() == 0 || !Character.isDigit(exp.charAt(exp.length()-1)))) {
+            exp.append("0");
+        }
+        if (seg.equals("(") && exp.length() > 0 && !isOperator(exp.charAt(exp.length()-1))) {
+            exp.append("*");
+        }
         exp.append(seg);
         if (exp.toString().startsWith("+") || exp.toString().startsWith("-")) {
             exp.insert(0, "0"); //add zero to handle negative numbers being the first number
@@ -108,10 +114,13 @@ public class Expression {
                 if (nonDigit.test(cur) && nonDigit.test(prev)) { //check for two operators next to each other
                     return false;
                 }
-                if (cur.equals(")") && (isOperator(prev) || prev.equals("("))) {
+                if (cur.equals(")") && (isOperator(prev) || prev.equals("("))) { //a number must follow )
                     return false;
                 }
-                if (isOperator(cur) && prev.equals("(")) {
+                if (isOperator(cur) && prev.equals("(")) { //( must follow a number
+                    return false;
+                }
+                if (cur.equals("(") && (prev.equals(")") || Character.isDigit(prev.charAt(0)))) {
                     return false;
                 }
             }
