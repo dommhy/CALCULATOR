@@ -42,20 +42,15 @@ public class Calculation {
     }
 
     /**
-     * Returns the precedence of the operator. Cited from GeeksforGeeks.
-     * @param operator the operator
-     * @return the precedence of the operator
+     * Evaluates the infix expression
+     * @return the result of the expression
+     * @throws IllegalArgumentException if the expression is invalid
+     * @throws ArithmeticException if there is division by zero
      * @see #postfix()
-     * @see https://www.geeksforgeeks.org/convert-infix-expression-to-postfix-expression/
+     * @see #evaluate(List)
      */
-    private int precedence(String operator) {
-        if (operator.equals("+") || operator.equals("-")) {
-            return 1;
-        }
-        if (operator.equals("*") || operator.equals("/")) {
-            return 2;
-        }
-        return 0;
+    public double evaluate() throws IllegalArgumentException, ArithmeticException {
+        return evaluate(postfix());
     }
 
     /**
@@ -81,15 +76,23 @@ public class Calculation {
     }
 
     /**
-     * Evaluates the infix expression
-     * @return the result of the expression
-     * @throws IllegalArgumentException if the expression is invalid
-     * @throws ArithmeticException if there is division by zero
+     * Returns the precedence of the operator. Cited from GeeksforGeeks.
+     * @param operator the operator
+     * @return the precedence of the operator
      * @see #postfix()
-     * @see #evaluate(List)
+     * @see https://www.geeksforgeeks.org/convert-infix-expression-to-postfix-expression/
      */
-    public double evaluate() throws IllegalArgumentException, ArithmeticException {
-        return evaluate(postfix());
+    private int precedence(String operator) {
+        if (operator.equals("+") || operator.equals("-")) {
+            return 1;
+        }
+        if (operator.equals("*") || operator.equals("/")) {
+            return 2;
+        }
+        if (operator.equals("^")) {
+            return 3;
+        }
+        return 0; //doesn't throw exception as it may affect try catch block in Driver class (not sure but to be safe)
     }
 
     /**
@@ -107,6 +110,8 @@ public class Calculation {
             return operand1 - operand2;
         } else if (operator.equals("*")) {
             return operand1 * operand2;
+        } else if(operator.equals("^")) {
+            return Math.pow(operand1, operand2);
         } else if (operand2 == 0) { //guaranteed division
             throw new ArithmeticException("Division by zero");
         }

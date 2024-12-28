@@ -10,7 +10,7 @@ public class Calculator extends PApplet {
     
     ButtonGrid input;
     Output output;
-    Exception e = null; //variable to handle arithmetic and syntax errors
+    Exception e; //variable to handle arithmetic and syntax errors
 
     public void settings() {
         size(400, 600);
@@ -19,6 +19,7 @@ public class Calculator extends PApplet {
     public void setup() {
         input = ButtonGrid.getButtonGrid(this);
         output = new Output(this);
+        e = null;
     }
 
     public void draw() {
@@ -37,12 +38,19 @@ public class Calculator extends PApplet {
         } catch (Exception e) {
             this.e = e;
         }
-        if (input.getCancelButton().isClicked()) { //reset exception
+        if (e != null && input.getCancelButton().isClicked()) { //reset exception
             e = null;
         }
     }
 
     public void keyPressed() {
-        output.updateText();
+        try {
+            output.updateText();
+        } catch (Exception e) {
+            this.e = e;
+        }
+        if (e != null && key == BACKSPACE) {
+            e = null;
+        }
     }
 }

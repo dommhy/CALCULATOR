@@ -1,9 +1,15 @@
 package model.tests;
 
 import org.junit.jupiter.api.*;
+
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
+import java.util.function.*;
+
 import model.Expression;
+import static model.Expression.*;
 
 public class ExpressionTest {
 
@@ -12,22 +18,30 @@ public class ExpressionTest {
     @BeforeEach
     void setup() {
         e = new Expression[] {
-            new Expression("3+5*2"),
+            new Expression("3+5*2"), //0
             new Expression("3**5"),
             new Expression("3+5*2-4"),
             new Expression("35"),
             new Expression("3+5*2-"),
-            new Expression("/34+3"),
+            new Expression("/34+3"), //5
             new Expression("-34+3"),
             new Expression(),
             new Expression("+"),
             new Expression("*"),
-            new Expression("3.4"),
+            new Expression("3.4"), //10
             new Expression("3..2"),
             new Expression("."),
             new Expression("4.3.2"),
             new Expression("3.4+2"),
-            new Expression("33.4+24.3")
+            new Expression("33.4+24.3"), //15
+            new Expression("()"),
+            new Expression(")"),
+            new Expression("(3+2)*10"),
+            new Expression("(4*3)(4)"),
+            new Expression("((2)"), //20
+            new Expression("(4+3)+2*5)"),
+            new Expression("(*33)"),
+            new Expression("3^7")
         };
     }
 
@@ -86,25 +100,55 @@ public class ExpressionTest {
         assertFalse(e[13].isValid());
         assertTrue(e[14].isValid());
         assertTrue(e[15].isValid());
+        assertFalse(e[16].isValid());
+        assertFalse(e[17].isValid());
+        assertTrue(e[18].isValid());
+        assertTrue(e[19].isValid());
+        assertFalse(e[20].isValid());
+        assertFalse(e[21].isValid());
+        assertFalse(e[22].isValid());
+        assertTrue(e[23].isValid());
     }
 
     @Test
     void testGetSegments() {
-        assertArrayEquals(new String[] {"3", "+", "5", "*", "2"}, e[0].getSegments().toArray(String[]::new));
+        //cases with exceptions are tested in testIsValid(). See above
+        Function<Expression, String[]> toArray = exp -> exp.getSegments().toArray(String[]::new);
+        assertArrayEquals(new String[] {"3", "+", "5", "*", "2"}, toArray.apply(e[0]));
+        assertArrayEquals(new String[] {"3", "+", "5", "*", "2", "-", "4"}, toArray.apply(e[2]));
+        assertArrayEquals(new String[] {"35"}, toArray.apply(e[3]));
+        assertArrayEquals(new String[] {"-", "34", "+", "3"}, toArray.apply(e[6]));
+        assertArrayEquals(new String[] {"3.4"}, toArray.apply(e[10]));
+        assertArrayEquals(new String[] {"3.4", "+", "2"}, toArray.apply(e[14]));
+        assertArrayEquals(new String[] {"33.4", "+", "24.3"}, toArray.apply(e[15]));
+        assertArrayEquals(new String[] {"(", "3", "+", "2", ")", "*", "10"}, toArray.apply(e[18]));
+        assertArrayEquals(new String[] {"(", "4", "*", "3", ")", "(", "4", ")"}, toArray.apply(e[19]));
+
         assertThrows(IllegalArgumentException.class, () -> e[1].getSegments());
-        assertArrayEquals(new String[] {"3", "+", "5", "*", "2", "-", "4"}, e[2].getSegments().toArray(String[]::new));
-        assertArrayEquals(new String[] {"35"}, e[3].getSegments().toArray(String[]::new));
-        assertThrows(IllegalArgumentException.class, () -> e[4].getSegments());
-        assertThrows(IllegalArgumentException.class, () -> e[5].getSegments());
-        assertArrayEquals(new String[] {"-", "34", "+", "3"}, e[6].getSegments().toArray(String[]::new));
-        assertThrows(IllegalArgumentException.class, () -> e[7].getSegments());
-        assertThrows(IllegalArgumentException.class, () -> e[8].getSegments());
-        assertThrows(IllegalArgumentException.class, () -> e[9].getSegments());
-        assertArrayEquals(new String[] {"3.4"}, e[10].getSegments().toArray(String[]::new));
-        assertThrows(IllegalArgumentException.class, () -> e[11].getSegments());
-        assertThrows(IllegalArgumentException.class, () -> e[12].getSegments());
-        assertThrows(IllegalArgumentException.class, () -> e[13].getSegments());
-        assertArrayEquals(new String[] {"3.4", "+", "2"}, e[14].getSegments().toArray(String[]::new));
-        assertArrayEquals(new String[] {"33.4", "+", "24.3"}, e[15].getSegments().toArray(String[]::new));
+    }
+
+    @Test
+    void testIsOperator() {
+        assertTrue(isOperator("+"));
+        assertTrue(isOperator("-"));
+        assertTrue(isOperator("*"));
+        assertTrue(isOperator("/"));
+        assertTrue(isOperator("^"));
+        assertFalse(isOperator("3"));
+        assertFalse(isOperator("**"));
+    }
+
+    @Test
+    void testValidSeg() {
+        assertTrue(validSeg("()53749"));
+        assertTrue(validSeg(")"));
+        assertTrue(validSeg("0"));
+        assertFalse(validSeg("a1243"));
+        assertFalse(validSeg("0_2"));
+        assertTrue(validSeg("."));
+        assertTrue(validSeg("-"));
+        assertTrue(validSeg("/"));
+        assertFalse(validSeg("\\"));
+        assertTrue(validSeg("(3+3)*2/4-7/4"));
     }
 }

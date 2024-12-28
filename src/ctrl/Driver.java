@@ -3,6 +3,7 @@ package ctrl;
 import model.Expression;
 import view.input.*;
 import processing.core.*;
+import static model.Expression.*;
 
 /**
  * Class that handles the event when buttons are clicked
@@ -80,7 +81,7 @@ public class Driver {
         } else if (Expression.isOperator(c) && !result.toString().isEmpty()) {
             updateExpression();
             expression.add(c);
-        } else if (Character.isDigit(c) || Expression.isOperator(c) || c == '.') {
+        } else if (validChar(c) && c != '(' && c != ')') { //TODO: fix temporary boolean
             result.clear();
             expression.add(c);
         }

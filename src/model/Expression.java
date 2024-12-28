@@ -86,39 +86,57 @@ public class Expression {
      * @return {@code true} if the expression is valid
      */
     public boolean isValid() {
-        if (exp.length() == 0) {
+        if (exp.length() == 0 || !validSeg(exp.toString())) {
             return false;
         }
 
-        Predicate<String> validNonDigit = s -> (isOperator(s) || nonNumeric(s));
+        Predicate<String> nonDigit = s -> (isOperator(s) || s.equals("."));
+        Stack<Integer> brackets = new Stack<>();
         
         for (int i = 0; i < exp.length(); i++) {
-            String str = exp.charAt(i) + "";
-            if (!validChar(exp.charAt(i))) {
+            String cur = exp.charAt(i) + "";
+            if (i == exp.length() - 1 && nonDigit.test(cur)) {
                 return false;
             }
-            if (i == exp.length() - 1 && validNonDigit.test(str)) {
+
+            if (i == 0 && (cur.equals("*") || cur.equals("/"))) { //check for operator at beginning
                 return false;
             }
-            if (i == 0 && (str.equals("*") || str.equals("/"))) { //check for operator at beginning
-                return false;
-            }
-            if (i > 0) { //check for two operators next to each other
+
+            if (i > 0) {
                 String prev = exp.charAt(i - 1) + "";
-                if (validNonDigit.test(str) && validNonDigit.test(prev)) {
+                if (nonDigit.test(cur) && nonDigit.test(prev)) { //check for two operators next to each other
+                    return false;
+                }
+                if (cur.equals(")") && (isOperator(prev) || prev.equals("("))) {
+                    return false;
+                }
+                if (isOperator(cur) && prev.equals("(")) {
                     return false;
                 }
             }
-            if (str.equals(".")) { //check for multiple decimal points
+
+            if (cur.equals(".")) { //check for multiple decimal points
                 for (int j = i + 1; j < exp.length() && !isOperator(exp.charAt(j) + ""); j++) {
                     if (exp.charAt(j) == '.') {
                         return false;
                     }
                 }
             }
+
+            if (cur.equals("(")) { //check for brackets
+                brackets.push(1); //doesn't matter what's inside
+            }
+            if (cur.equals(")")) {
+                try {
+                    brackets.pop();
+                } catch (EmptyStackException e) {
+                    return false;
+                }
+            }
         }
 
-        return true;
+        return brackets.isEmpty(); //empty stack == matching brackets
     }
 
     /**
@@ -143,15 +161,18 @@ public class Expression {
             }
         };
 
+        Predicate<Character> isBracket = c -> c == '(' || c == ')';
+
         int start = 0;
         for (int i = 0; i < exp.length(); i++) {
-            if (isOperator(exp.charAt(i))) {
+            char cur = exp.charAt(i);
+            if (isOperator(cur) || isBracket.test(cur)) {
                 addItem.accept(result, exp.substring(start, i)); //adds numbers
                 addItem.accept(result, exp.substring(i, i+1)); //adds operators
                 start = i+1;
             }
             if (i == exp.length()-1) {
-                result.add(exp.substring(start));
+                addItem.accept(result, exp.substring(start));
             }
         }
 
@@ -162,14 +183,17 @@ public class Expression {
 
     /**
      * Checks if the character is an operator
-     * @param segment - the string to check
+     * @param seg - the string to check
      * @return {@code true} if the character is an operator
      * @see #isValid()
      * @see #add(char)
      */
-    public static boolean isOperator(String segment) {
-        return segment.equals("+") || segment.equals("-") ||
-               segment.equals("*") || segment.equals("/");
+    public static boolean isOperator(String seg) {
+        if (seg.length() != 1) {
+            return false;
+        }
+        String str = seg.replaceAll("[+\\-*/^]", "");
+        return str.isEmpty();
     }
 
     /**
@@ -215,13 +239,22 @@ public class Expression {
     }
 
     /**
-     * Checks if the string is a valid segment
+     * Checks if the string contains only digits and operators
      * @param str - the string to check
      * @return {@code true} if the segment contains only digits and operators
      */
     public static boolean validSeg(String str) {
-        String test = str.replaceAll("[0-9+*/.()\\-]", "");
-        return test.isEmpty();
+        return str.chars().allMatch(Expression::validChar);
+    }
+
+    /**
+     * Helper function 
+     * @param c
+     * @return
+     * @see #validSeg(String)
+     */
+    private static boolean validChar(int c) {
+        return validChar((char)c);
     }
 
     /**
@@ -230,7 +263,6 @@ public class Expression {
      * @return {@code true} if the character is a valid character
      */
     public static boolean validChar(char c) {
-        return validSeg(c + "");
+        return isOperator(c) || nonNumeric(c) || Character.isDigit(c);
     }
-    
 }
