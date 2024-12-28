@@ -172,7 +172,7 @@ public class Expression {
                 start = i+1;
             }
             if (i == exp.length()-1) {
-                addItem.accept(result, exp.substring(start));
+                addItem.accept(result, exp.substring(start)); //adds the last number, if any
             }
         }
 
@@ -248,9 +248,9 @@ public class Expression {
     }
 
     /**
-     * Helper function 
-     * @param c
-     * @return
+     * Helper function that parses the character to an integer, to allow for the use of {@code IntStream}
+     * @param c - the character to check
+     * @return {@code true} if the character is a valid character
      * @see #validSeg(String)
      */
     private static boolean validChar(int c) {

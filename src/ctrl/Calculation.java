@@ -26,7 +26,14 @@ public class Calculation {
             String seg = infix.get(i);
             if (Expression.numeric(seg)) {
                 result.add(seg);
-            } else { //no brackets for this calculator
+            } else if (seg.equals("(")) {
+                operatorStack.push(seg);
+            } else if (seg.equals(")")) {
+                while (!operatorStack.isEmpty() && !operatorStack.peek().equals("(")) {
+                    result.add(operatorStack.pop());
+                }
+                operatorStack.pop(); //left parenthesis
+            } else {
                 while (!operatorStack.isEmpty() && precedence(seg) <= precedence(operatorStack.peek())) {
                     result.add(operatorStack.pop());
                 }

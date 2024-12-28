@@ -81,7 +81,7 @@ public class Driver {
         } else if (Expression.isOperator(c) && !result.toString().isEmpty()) {
             updateExpression();
             expression.add(c);
-        } else if (validChar(c) && c != '(' && c != ')') { //TODO: fix temporary boolean
+        } else if (validChar(c)) {
             result.clear();
             expression.add(c);
         }
