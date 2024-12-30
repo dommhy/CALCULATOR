@@ -84,6 +84,24 @@ public class ExpressionTest {
     }
 
     @Test
+    void testPop() {
+        assertTrue(e[0].pop());
+        assertTrue("3+5*".equals(e[0].toString()));
+        assertTrue(e[0].pop());
+        assertTrue("3+5".equals(e[0].toString()));
+        assertTrue(e[0].pop());
+        assertTrue("3+".equals(e[0].toString()));
+        assertTrue(e[0].pop());
+        assertTrue("3".equals(e[0].toString()));
+        assertTrue(e[0].pop());
+        assertTrue("".equals(e[0].toString()));
+        assertFalse(e[0].pop());
+        assertTrue("".equals(e[0].toString()));
+        assertFalse(e[7].pop());
+        assertTrue("".equals(e[7].toString()));
+    }
+
+    @Test
     void testClear() {
         e[0].clear();
         assertTrue(e[0].toString().isEmpty());
