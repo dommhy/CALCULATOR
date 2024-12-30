@@ -77,6 +77,7 @@ public class Driver {
             Calculation calc = new Calculation(expression);
             result = formatResult(calc.evaluate());
         } else if (c == PApplet.BACKSPACE) {
+            result.clear();
             expression.pop();
         } else if (Expression.isOperator(c) && !result.toString().isEmpty()) {
             updateExpression();

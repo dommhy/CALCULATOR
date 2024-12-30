@@ -5,7 +5,6 @@ import org.junit.jupiter.api.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.List;
 import java.util.function.*;
 
 import model.Expression;
