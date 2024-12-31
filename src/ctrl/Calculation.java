@@ -22,8 +22,7 @@ public class Calculation {
         Stack<String> operatorStack = new Stack<>();
         List<String> result = new ArrayList<>();
 
-        for (int i = 0; i < infix.size(); i++) {
-            String seg = infix.get(i);
+        for (String seg : infix) {
             if (Expression.numeric(seg)) {
                 result.add(seg);
             } else if (seg.equals("(")) {
