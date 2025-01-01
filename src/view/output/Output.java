@@ -67,8 +67,8 @@ public class Output {
      * Updates the expression and result from the Driver class
      * @see ctrl.Driver called in mousePressed()
      */
-    public void update() {
-        driver.click();
+    public void update(Exception e) {
+        driver.click(p, e);
         exp = driver.getExpression();
     }
 
@@ -77,8 +77,8 @@ public class Output {
      * @see ctrl.Driver
      * @implNote Called in keyPressed() in the PApplet class
      */
-    public void updateText() {
-        driver.text(p);
+    public void updateText(Exception e) {
+        driver.text(p, e);
         exp = driver.getExpression();
     }
 

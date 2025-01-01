@@ -33,7 +33,7 @@ public class Calculator extends PApplet {
 
     public void mousePressed() {
         try {
-            output.update();
+            output.update(e);
         } catch (Exception e) {
             this.e = e;
         }
@@ -44,7 +44,7 @@ public class Calculator extends PApplet {
 
     public void keyPressed() {
         try {
-            output.updateText();
+            output.updateText(e);
         } catch (Exception e) {
             this.e = e;
         }

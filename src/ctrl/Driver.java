@@ -36,24 +36,28 @@ public class Driver {
      * Handles the event when buttons are clicked. Returns the result of the calculation, applicable to the button '='
      * @return the result of the calculation. If the calculation is not done, return an empty string
      * @implNote The method is called when the mouse is pressed
+     * @see 
      */
-    public Expression click() {
-        for (int i = 0; i < buttons.length; i++) {
-            for (int j = 0; j < buttons[i].length; j++) {
-                if (buttons[i][j].isClicked()) {
-                    char c = buttons[i][j].getLabel();
-                    if (c == 'C') {
-                        expression.clear();
-                        result.clear();
-                    } else if (c == '=') {
-                        Calculation calc = new Calculation(expression);
-                        result = formatResult(calc.evaluate());
-                    } else {
-                        if (Expression.isOperator(c) && !result.toString().isEmpty()) {
-                            updateExpression();
+    public Expression click(PApplet p, Exception e) {
+        if (ButtonGrid.getInstance(p).getCancelButton().isClicked()) {
+            expression.clear();
+            result.clear();
+        }
+        if (e == null) {
+            for (int i = 0; i < buttons.length; i++) {
+                for (int j = 0; j < buttons[i].length; j++) {
+                    if (buttons[i][j].isClicked()) {
+                        char c = buttons[i][j].getLabel();
+                        if (c == '=') {
+                            Calculation calc = new Calculation(expression);
+                            result = formatResult(calc.evaluate());
+                        } else {
+                            if (Expression.isOperator(c) && !result.toString().isEmpty()) {
+                                updateExpression();
+                            }
+                            result.clear();
+                            expression.add(c);
                         }
-                        result.clear();
-                        expression.add(c);
                     }
                 }
             }
@@ -67,24 +71,30 @@ public class Driver {
      * @return the result of the calculation. If the calculation is not done, return an empty string
      * @implNote The method is called when the key is pressed {@link processing.core.PApplet#keyPressed()}
      */
-    public Expression text(PApplet p) {
+    public Expression text(PApplet p, Exception e) {
         char c = p.key;
         if (c == 'C' || c == 'c') {
             expression.clear();
             result.clear();
-        } else if (c == '=' || c == PApplet.ENTER || c == PApplet.RETURN) {
-            expression.add("=");
-            Calculation calc = new Calculation(expression);
-            result = formatResult(calc.evaluate());
-        } else if (c == PApplet.BACKSPACE) {
+        }
+        if (c == PApplet.BACKSPACE) {
             result.clear();
             expression.pop();
-        } else if (Expression.isOperator(c) && !result.toString().isEmpty()) {
-            updateExpression();
-            expression.add(c);
-        } else if (validChar(c)) {
-            result.clear();
-            expression.add(c);
+        }
+        if (e == null) {
+            if (c == '=' || c == PApplet.ENTER || c == PApplet.RETURN) {
+                expression.add("=");
+                Calculation calc = new Calculation(expression);
+                result = formatResult(calc.evaluate());
+            }
+            
+            if (Expression.isOperator(c) && !result.toString().isEmpty()) {
+                updateExpression();
+                expression.add(c);
+            } else if (validChar(c)) {
+                result.clear();
+                expression.add(c);
+            }
         }
         return result;
     }
