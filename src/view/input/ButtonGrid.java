@@ -41,7 +41,7 @@ public class ButtonGrid {
      * @param p
      * @return the ButtonGrid
      */
-    public static ButtonGrid getInstance(PApplet p) {
+    public static synchronized ButtonGrid getInstance(PApplet p) {
         if (instance == null) {
             instance = new ButtonGrid(p);
         }
