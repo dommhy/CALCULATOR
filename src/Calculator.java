@@ -13,17 +13,16 @@ public class Calculator extends PApplet {
     Exception e; //variable to handle arithmetic and syntax errors
 
     public void settings() {
-        size(400, 600);
+        size(500, 600);
     }
 
     public void setup() {
-        input = ButtonGrid.getButtonGrid(this);
+        input = ButtonGrid.getInstance(this);
         output = new Output(this);
         e = null;
     }
 
     public void draw() {
-        background(80);
         input.display();
         if (e != null) {
             output.errorText(e);

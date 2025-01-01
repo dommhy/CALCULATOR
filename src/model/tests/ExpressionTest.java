@@ -81,6 +81,10 @@ public class ExpressionTest {
         str = ")";
         assertTrue(e[0].add(str));
         assertTrue("3+5*23+0.4*(3*2)".equals(e[0].toString()));
+
+        str = ".";
+        assertTrue(e[0].add(str));
+        assertTrue("3+5*23+0.4*(3*2)*0.".equals(e[0].toString()));
     }
 
     @Test

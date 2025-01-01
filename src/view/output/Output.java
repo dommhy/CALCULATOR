@@ -3,6 +3,7 @@ package view.output;
 import ctrl.Driver;
 import model.Expression;
 import processing.core.PApplet;
+import view.input.*;
 
 /**
  * Handles the design of the output section of the design.
@@ -13,6 +14,7 @@ public class Output {
     private Driver driver;
     private Expression exp;
     private float textXpos;
+    private float w, h;
     
     /**
      * Creates the output section of the design
@@ -23,26 +25,42 @@ public class Output {
         driver = Driver.getDriver(p);
         exp = driver.getExpression();
         textXpos = p.width - p.width/40;
+        w = p.width;
+        h = ButtonGrid.getInstance(p).getY();
+    }
+
+    /**
+     * Draws the background of the output section
+     */
+    private void drawBackground() {
+        p.fill(80);
+        p.noStroke();
+        p.rectMode(PApplet.CORNER);
+        p.rect(0, 0, w, h);
     }
 
     /**
      * Displays the expression and result on the screen
      */
     public void display() {
-        Expression result = driver.getResult();
-        p.fill(255);
-        p.noStroke();
-        p.textAlign(PApplet.RIGHT);
-        if (result.toString().isEmpty()) {
-            p.textSize(p.height/10);
-            p.text(exp.toString(), textXpos, p.height/4);
-        } else {
-            p.textSize(p.height/20);
-            p.text(exp.toString(), textXpos, p.height/8);
-            p.textSize(p.height/10);
-            p.text(result.toString(), textXpos, p.height/4);
-        }
-            
+        Runnable drawText = () -> {
+            Expression result = driver.getResult();
+            p.fill(255);
+            p.noStroke();
+            p.textAlign(PApplet.RIGHT, PApplet.CENTER);
+            if (result.toString().isEmpty()) {
+                p.textSize(h/3);
+                p.text(exp.toString(), textXpos, h/2);
+            } else {
+                p.textSize(h/6);
+                p.text(exp.toString(), textXpos, h/3);
+                p.textSize(h/3);
+                p.text(result.toString(), textXpos, h/1.5f);
+            }
+        };
+        
+        drawBackground();
+        drawText.run();
     }
 
     /**
@@ -70,17 +88,22 @@ public class Output {
      * @see ctrl.Driver
      */
     public void errorText(Exception e) {
-        p.fill(255);
-        p.noStroke();
-        p.textAlign(PApplet.RIGHT);
-        p.textSize(p.height/10);
-        if (e instanceof ArithmeticException) {
-            p.text("Math Error", textXpos, p.height/4);
-        } else if (e instanceof IllegalArgumentException) {
-            p.text("Syntax Error", textXpos, p.height/4);
-        } else {
-            e.printStackTrace();
-        }
+        Runnable drawText = () -> {
+            p.fill(255);
+            p.noStroke();
+            p.textAlign(PApplet.RIGHT, PApplet.CENTER);
+            p.textSize(h/3);
+            if (e instanceof ArithmeticException) {
+                p.text("Math Error", textXpos, h/2);
+            } else if (e instanceof IllegalArgumentException) {
+                p.text("Syntax Error", textXpos, h/2);
+            } else {
+                e.printStackTrace();
+            }
+        };
+
+        drawBackground();
+        drawText.run();
     }
 
 }

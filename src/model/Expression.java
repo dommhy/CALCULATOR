@@ -34,11 +34,13 @@ public class Expression {
         if (!validSeg(seg)) {
             return false;
         }
+        Predicate<String> closingParentheses = s -> s.endsWith(")") && (numeric(seg) || seg.equals("."));
+        Predicate<String> openingParentheses = s -> seg.equals("(") && exp.length() > 0 && !isOperator(s.charAt(s.length()-1));
+        if (closingParentheses.test(exp.toString()) || openingParentheses.test(exp.toString())) {
+            exp.append("*");
+        }
         if (seg.equals(".") && (exp.length() == 0 || !Character.isDigit(exp.charAt(exp.length()-1)))) {
             exp.append("0");
-        }
-        if (seg.equals("(") && exp.length() > 0 && !isOperator(exp.charAt(exp.length()-1))) {
-            exp.append("*");
         }
         exp.append(seg);
         if (exp.toString().startsWith("+") || exp.toString().startsWith("-")) {

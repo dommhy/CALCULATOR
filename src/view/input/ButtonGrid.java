@@ -13,16 +13,16 @@ public class ButtonGrid {
     private int bgColor = 100;
     private Button[][] buttons;
     private static final char[][] buttonLabels = {
-        {'1', '2', '3', '+'},
-        {'4', '5', '6', '-'},
-        {'7', '8', '9', '*'},
-        {'C', '0', '=', '/'}
+        {'1', '2', '3', '+', '^'},
+        {'4', '5', '6', '-', '('},
+        {'7', '8', '9', '*', ')'},
+        {'C', '0', '=', '/', '.'}
     };
     
     private ButtonGrid(PApplet p) {
         this.p = p;
-        buttons = new Button[4][4];
-        dist = p.width/4;
+        buttons = new Button[4][5];
+        dist = p.width/5;
         float dia = dist - p.width/20;
         float x = dist/2;
         float y = getY();
@@ -41,7 +41,7 @@ public class ButtonGrid {
      * @param p
      * @return the ButtonGrid
      */
-    public static ButtonGrid getButtonGrid(PApplet p) {
+    public static ButtonGrid getInstance(PApplet p) {
         if (instance == null) {
             instance = new ButtonGrid(p);
         }

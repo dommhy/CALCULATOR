@@ -15,7 +15,7 @@ public class Driver {
     private Expression expression, result;
 
     private Driver(PApplet p) {
-        buttons = ButtonGrid.getButtonGrid(p).getButtons();
+        buttons = ButtonGrid.getInstance(p).getButtons();
         expression = new Expression();
         result = new Expression();
     }
