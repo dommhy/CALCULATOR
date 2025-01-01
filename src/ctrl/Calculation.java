@@ -7,6 +7,10 @@ import model.Expression;
 public class Calculation {
     private Expression exp;
 
+    /**
+     * Constructs a Calculation object with the given expression
+     * @param expression
+     */
     public Calculation(Expression expression) {
         this.exp = expression;
     }

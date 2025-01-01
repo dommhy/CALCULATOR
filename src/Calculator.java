@@ -18,7 +18,7 @@ public class Calculator extends PApplet {
 
     public void setup() {
         input = ButtonGrid.getInstance(this);
-        output = new Output(this);
+        output = Output.getInstance(this);
         e = null;
     }
 

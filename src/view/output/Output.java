@@ -15,18 +15,31 @@ public class Output {
     private Expression exp;
     private float textXpos;
     private float w, h;
+    private static Output instance;
     
     /**
      * Creates the output section of the design
      * @param p the PApplet
      */
-    public Output(PApplet p) {
+    private Output(PApplet p) {
         this.p = p;
         driver = Driver.getDriver(p);
         exp = driver.getExpression();
         textXpos = p.width - p.width/40;
         w = p.width;
         h = ButtonGrid.getInstance(p).getY();
+    }
+
+    /**
+     * Creates the output section of the design if it does not exist, otherwise returns the existing instance
+     * @param p - the PApplet object
+     * @return the Output instance
+     */
+    public static synchronized Output getInstance(PApplet p) {
+        if (instance == null) {
+            instance = new Output(p);
+        }
+        return instance;
     }
 
     /**

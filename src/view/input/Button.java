@@ -15,7 +15,7 @@ public class Button {
     /**
      * Constructor for Button.
      * Automatically changes detects the color of the button based on the text.
-     * @param p
+     * @param p - the PApplet object
      * @param x - x-coordinate of the button
      * @param y - y-coordinate of the button
      * @param dia - diameter of the button

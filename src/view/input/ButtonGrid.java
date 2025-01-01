@@ -19,6 +19,10 @@ public class ButtonGrid {
         {'C', '0', '=', '/', '.'}
     };
     
+    /**
+     * Constructor for ButtonGrid.
+     * @param p - the PApplet object
+     */
     private ButtonGrid(PApplet p) {
         this.p = p;
         buttons = new Button[4][5];
@@ -38,8 +42,8 @@ public class ButtonGrid {
 
     /**
      * Creates the grid if it does not exist, otherwise returns the existing grid. 
-     * @param p
-     * @return the ButtonGrid
+     * @param p - the PApplet object
+     * @return the ButtonGrid instance
      */
     public static synchronized ButtonGrid getInstance(PApplet p) {
         if (instance == null) {
@@ -48,6 +52,9 @@ public class ButtonGrid {
         return instance;
     }
 
+    /**
+     * Initializes the background of the input section.
+     */
     private void initBackground() {
         p.fill(p.color(bgColor));
         p.noStroke();
@@ -84,8 +91,8 @@ public class ButtonGrid {
     }
 
     /**
-     * Gets the clear button.
-     * @return the clear button
+     * Gets the cancel button.
+     * @return the cancel button
      */
     public Button getCancelButton() {
         return buttons[3][0];

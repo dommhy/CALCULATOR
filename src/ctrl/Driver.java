@@ -33,10 +33,11 @@ public class Driver {
     }
 
     /**
-     * Handles the event when buttons are clicked. Returns the result of the calculation, applicable to the button '='
+     * Handles the event when buttons are clicked. Returns the result of the calculation, applicable to the button {@code '='}
+     * @param p - the PApplet object, to access the buttons
+     * @param e - the exception to handle arithmetic and syntax errors
      * @return the result of the calculation. If the calculation is not done, return an empty string
      * @implNote The method is called when the mouse is pressed
-     * @see 
      */
     public Expression click(PApplet p, Exception e) {
         if (ButtonGrid.getInstance(p).getCancelButton().isClicked()) {
@@ -68,6 +69,7 @@ public class Driver {
     /**
      * Handles the event when keys are pressed. Returns the result of the calculation.
      * @param p - the PApplet object, to access key and keyCode variables for code to work 
+     * @param e - the exception to handle arithmetic and syntax errors
      * @return the result of the calculation. If the calculation is not done, return an empty string
      * @implNote The method is called when the key is pressed {@link processing.core.PApplet#keyPressed()}
      */
@@ -87,7 +89,6 @@ public class Driver {
                 Calculation calc = new Calculation(expression);
                 result = formatResult(calc.evaluate());
             }
-            
             if (Expression.isOperator(c) && !result.toString().isEmpty()) {
                 updateExpression();
                 expression.add(c);
@@ -126,7 +127,7 @@ public class Driver {
 
     /**
      * Gets the result of the calculation
-     * @return the result
+     * @return the result as an Expression object
      * @implNote Used in the Output class to display the result
      * @see view.output.Output#display()
      */

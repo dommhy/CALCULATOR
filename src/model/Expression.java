@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.function.*;
 
 /**
- * Represents the expression that the user is inputting. Stores the expression as a string.
+ * Represents the expression that the user is inputting. Stores the expression as a StringBuilder.
  */
 public class Expression {
     private StringBuilder exp;
@@ -18,17 +18,17 @@ public class Expression {
 
     /**
      * Constructs an expression with the given string
-     * @param exp
+     * @param exp - the expression to set
      */
     public Expression(String exp) {
         this.exp = new StringBuilder(exp);
     }
 
     /**
-     * Adds a segment to the expression if it is a digit or an operator
-     * Adds a zero if the expression starts with {@code '+'} or {@code '-'}.
+     * Handles the addition of a segment to the expression. A segment is a numeric value, an operator, or a bracket.
+     * Automatically formats the expression to handle edge cases.
      * @param seg the segment to add
-     * @return {@code true} if the operation is successful
+     * @return {@code true} if the operation is successful, {@code false} otherwise
      */
     public boolean add(String seg) {
         if (!validSeg(seg)) {
@@ -53,7 +53,8 @@ public class Expression {
      * Adds a character to the expression if it is a digit or an operator
      * Adds a zero if the expression starts with {@code '+'} or {@code '-'}
      * @param c the character to add
-     * @return {@code true} if the operation is successful
+     * @return {@code true} if the operation is successful, {@code false} otherwise
+     * @implNote Wrapper method for {@link #add(String)}
      */
     public boolean add(char c) {
         return add(c + "");
@@ -61,7 +62,7 @@ public class Expression {
 
     /**
      * Deletes the last character of the expression
-     * @return {@code true} if the operation is successful
+     * @return {@code true} if the operation is successful, {@code false} otherwise
      */
     public boolean pop() {
         try {
@@ -151,7 +152,7 @@ public class Expression {
     }
 
     /**
-     * Splits the expression into segments that can be used to convert to postfix
+     * Splits the expression into segments. A segment is a numeric value, an operator, or a bracket.
      * @return the segments of the expression as a list
      * @throws IllegalArgumentException if the expression is invalid
      * @see #isValid()
@@ -195,7 +196,7 @@ public class Expression {
     /**
      * Checks if the character is an operator
      * @param seg - the string to check
-     * @return {@code true} if the character is an operator
+     * @return {@code true} if the character is an operator, {@code false} otherwise
      * @see #isValid()
      * @see #add(char)
      */
@@ -210,7 +211,7 @@ public class Expression {
     /**
      * Checks if the character is an operator, helper method
      * @param c - the character to check
-     * @return {@code true} if the character is an operator 
+     * @return {@code true} if the character is an operator , {@code false} otherwise
      * @see #isOperator(String)
      */
     public static boolean isOperator(char c) {
@@ -218,18 +219,19 @@ public class Expression {
     }
 
     /**
-     * Checks if the string is a non-numeric character, and is not an operator
+     * Checks if the string segment is equal to {@code .}, {@code (} or {@code )}
      * @param s - the string to check
-     * @return {@code true} if the string is a non-numeric character and not an operator
+     * @return {@code true} if the string is a non-numeric character and not an operator, {@code false} otherwise
      */
     public static boolean nonNumeric(String s) {
         return s.equals(".") || s.equals("(") || s.equals(")");
     }
 
     /**
-     * Checks if the character is a non-numeric character, and is not an operator
+     * Checks if the character is equal to {@code .}, {@code (} or {@code )}
      * @param c - the character to check
-     * @return {@code true} if the character is a non-numeric character and not an operator
+     * @return {@code true} if the character is a non-numeric character and not an operator, {@code false} otherwise
+     * @implNote wrapper method for {@link #nonNumeric(String)}
      */
     public static boolean nonNumeric(char c) {
         return nonNumeric(c + "");
@@ -238,7 +240,7 @@ public class Expression {
     /**
      * Checks if the string is a number
      * @param s - the string to check
-     * @return {@code true} if the string is a number
+     * @return {@code true} if the string is a number, {@code false} otherwise
      */
     public static boolean numeric(String s) {
         try {
@@ -259,9 +261,10 @@ public class Expression {
     }
 
     /**
-     * Helper function that parses the character to an integer, to allow for the use of {@code IntStream}
+     * A valid character is a digit, an operator, or any of {@code .()}
      * @param c - the character to check
-     * @return {@code true} if the character is a valid character
+     * @return {@code true} if the character is a valid character, {@code false} otherwise
+     * @implNote Helper function that parses the character to an integer, to allow for the use of {@code IntStream}
      * @see #validSeg(String)
      */
     private static boolean validChar(int c) {
@@ -269,9 +272,9 @@ public class Expression {
     }
 
     /**
-     * Checks if the character is a valid character
+     * A valid character is a digit, an operator, or any of {@code .()}
      * @param c - the character to check
-     * @return {@code true} if the character is a valid character
+     * @return {@code true} if the character is a valid character, {@code false} otherwise
      */
     public static boolean validChar(char c) {
         return isOperator(c) || nonNumeric(c) || Character.isDigit(c);
