@@ -6,7 +6,8 @@ This is a calculator I made that can handle basic calculations, using the proces
 
 ### Running the program
 - There is a `.jar` file stored as `Calculator.java`. You can run this if you have JVM installed
-- 
+- For windows users, there is an `.exe` file that you can run.
+- Unfortunately I don't have anything ready for mac users but maybe you can convert the `.jar` file to something that you can open
 
 ### Folder structure (code)
 - Main code is stored under `src` as `Calculator.java`.
